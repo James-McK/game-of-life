@@ -1,0 +1,16 @@
+{
+  "name": "game-of-life",
+  "version": "0.0.1",
+  "description": "Game of life",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx tsc -w & python3 -m http.server",
+    "build": "npx tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "James McKee",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "typescript": "^5.1.6"
+  }
+}
