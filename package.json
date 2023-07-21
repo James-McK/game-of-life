@@ -6,11 +6,15 @@
   "scripts": {
     "dev": "npx tsc -w & python3 -m http.server",
     "build": "npx tsc",
+    "lint": "npx eslint . --ext ts",
     "test": "echo \"Error: no test specified\""
   },
   "author": "James McKee",
   "license": "GPL-3.0",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.1.0",
+    "@typescript-eslint/parser": "^6.1.0",
+    "eslint": "^8.45.0",
     "typescript": "^5.1.6"
   }
 }
