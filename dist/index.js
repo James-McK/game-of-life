@@ -1,9 +1,9 @@
-import { Renderer } from "./renderer.js";
+import { Game } from "./game.js";
 /**
  * Main function
  */
 async function main() {
-    let renderer = new Renderer();
+    let game = new Game();
 }
 // Run the main function
 main().catch(console.error);
