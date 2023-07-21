@@ -23,7 +23,6 @@ export class Renderer {
   }
 
   public async draw(state: boolean[][]) {
-    console.log("hi");
     this.clearCanvas();
 
     for (let xIndex = 0; xIndex < state.length; xIndex++) {
