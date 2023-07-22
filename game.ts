@@ -23,15 +23,7 @@ export class Game {
     );
     this.tempState = structuredClone(this.state);
 
-    // Set up a glider to start
-    // this.state[1]![0] = true;
-    // this.state[2]![1] = true;
-    // this.state[0]![2] = true;
-    // this.state[1]![2] = true;
-    // this.state[2]![2] = true;
-
     this.interval = setInterval(() => this.stepLoop(), 20);
-
     window.requestAnimationFrame(() => this.renderLoop());
   }
 
@@ -43,8 +35,6 @@ export class Game {
     fetch("/patterns/" + patternLocation)
       .then((response) => response.text())
       .then((data) => {
-        console.log(data);
-
         let i = 0;
         let lineIndex = 0;
         while (i < data.length) {
@@ -57,10 +47,54 @@ export class Game {
           lineIndex++;
 
           for (let charIndex = 0; charIndex < line.length; charIndex++) {
-            console.info(line[charIndex]);
-
             this.state[atX + charIndex]![atY + lineIndex] =
               line[charIndex] == "O";
+          }
+        }
+      });
+  }
+
+  public loadPatternRLE(patternLocation: string, atX: number, atY: number) {
+    fetch("/patterns/" + patternLocation)
+      .then((response) => response.text())
+      .then((data) => {
+        let strRunCount = "";
+        let lineIndex = 0;
+        let colIndex = 0;
+
+        let i = 0;
+        while (i < data.length) {
+          let j = data.indexOf("\n", i);
+          if (j == -1) j = data.length;
+          let line = data.substring(i, j);
+          i = j + 1;
+
+          if (line[0] == "#") continue;
+          if (line[0] == "x") continue; // Ignore the header for now
+
+          for (let charIndex = 0; charIndex < line.length; charIndex++) {
+            let char = line[charIndex]!;
+
+            let isNum = !isNaN(parseInt(char, 10));
+
+            if (isNum) {
+              strRunCount += char;
+            } else if (char === "$") {
+              if (strRunCount === "") strRunCount = "1";
+
+              lineIndex += parseInt(strRunCount, 10);
+              strRunCount = "";
+              colIndex = 0;
+            } else if (char === "b" || char === "o") {
+              if (strRunCount === "") strRunCount = "1";
+              let runCount = parseInt(strRunCount, 10);
+              strRunCount = "";
+
+              for (let run = 0; run < runCount; run++) {
+                this.state[atX + colIndex]![atY + lineIndex] = char == "o";
+                colIndex++;
+              }
+            }
           }
         }
       });

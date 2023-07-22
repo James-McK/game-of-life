@@ -4,7 +4,7 @@ import { Game } from "./game.js";
  */
 async function main() {
     const game = new Game(210, 111);
-    game.loadPatternPlaintext("space-rake.cells", 5, 5);
+    game.loadPatternRLE("space-rake.rle", 5, 5);
     game.play();
 }
 // Run the main function
