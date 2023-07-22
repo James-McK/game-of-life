@@ -5,8 +5,8 @@ export class Renderer {
     numWide = 118;
     numTall = 62;
     constructor() {
-        let canvas = document.getElementById("canvas");
-        let context = canvas.getContext("2d", { alpha: false });
+        const canvas = document.getElementById("canvas");
+        const context = canvas.getContext("2d", { alpha: false });
         canvas.width = this.numWide * this.squareSize + this.numWide;
         canvas.height = this.numTall * this.squareSize + this.numTall;
         context.lineCap = "round";

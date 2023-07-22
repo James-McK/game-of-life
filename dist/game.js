@@ -10,7 +10,7 @@ export class Game {
     stepCount = 0;
     constructor() {
         this.renderer = new Renderer();
-        this.state = Array.from({ length: this.width }, (i) => (i = Array.from({ length: this.height }, (j) => (j = false))));
+        this.state = Array.from({ length: this.width }, () => Array.from({ length: this.height }, () => false));
         this.tempState = structuredClone(this.state);
         // Set up a glider to start
         this.state[1][0] = true;
@@ -38,11 +38,11 @@ export class Game {
         for (let xIndex = 0; xIndex < this.width; xIndex++) {
             for (let yIndex = 0; yIndex < this.height; yIndex++) {
                 // Loop at edges
-                let minusX = (xIndex - 1 + this.width) % this.width;
-                let minusY = (yIndex - 1 + this.height) % this.height;
-                let plusX = (xIndex + 1) % this.width;
-                let plusY = (yIndex + 1) % this.height;
-                let numAliveNeighbours = +this.state[minusX][minusY] +
+                const minusX = (xIndex - 1 + this.width) % this.width;
+                const minusY = (yIndex - 1 + this.height) % this.height;
+                const plusX = (xIndex + 1) % this.width;
+                const plusY = (yIndex + 1) % this.height;
+                const numAliveNeighbours = +this.state[minusX][minusY] +
                     +this.state[minusX][yIndex] +
                     +this.state[minusX][plusY] +
                     +this.state[xIndex][minusY] +
