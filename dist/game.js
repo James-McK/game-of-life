@@ -3,23 +3,86 @@ export class Game {
     renderer;
     state;
     tempState;
-    width = 118;
-    height = 62;
+    width = 230;
+    height = 115;
     interval;
     isRunning = false;
     stepCount = 0;
-    constructor() {
-        this.renderer = new Renderer();
+    constructor(width, height) {
+        this.width = width;
+        this.height = height;
+        this.renderer = new Renderer(width, height);
         this.state = Array.from({ length: this.width }, () => Array.from({ length: this.height }, () => false));
         this.tempState = structuredClone(this.state);
-        // Set up a glider to start
-        this.state[1][0] = true;
-        this.state[2][1] = true;
-        this.state[0][2] = true;
-        this.state[1][2] = true;
-        this.state[2][2] = true;
         this.interval = setInterval(() => this.stepLoop(), 20);
         window.requestAnimationFrame(() => this.renderLoop());
+    }
+    loadPatternPlaintext(patternLocation, atX, atY) {
+        fetch("/patterns/" + patternLocation)
+            .then((response) => response.text())
+            .then((data) => {
+            let i = 0;
+            let lineIndex = 0;
+            while (i < data.length) {
+                let j = data.indexOf("\n", i);
+                if (j == -1)
+                    j = data.length;
+                const line = data.substring(i, j);
+                i = j + 1;
+                if (line[0] == "!")
+                    continue;
+                for (let charIndex = 0; charIndex < line.length; charIndex++) {
+                    this.state[atX + charIndex][atY + lineIndex] =
+                        line[charIndex] == "O";
+                }
+                lineIndex++;
+            }
+        });
+    }
+    loadPatternRLE(patternLocation, atX, atY) {
+        fetch("/patterns/" + patternLocation)
+            .then((response) => response.text())
+            .then((data) => {
+            let strRunCount = "";
+            let lineIndex = 0;
+            let colIndex = 0;
+            let i = 0;
+            while (i < data.length) {
+                let j = data.indexOf("\n", i);
+                if (j == -1)
+                    j = data.length;
+                const line = data.substring(i, j);
+                i = j + 1;
+                if (line[0] == "#")
+                    continue;
+                if (line[0] == "x")
+                    continue; // Ignore the header for now
+                for (let charIndex = 0; charIndex < line.length; charIndex++) {
+                    const char = line[charIndex];
+                    const isNum = !isNaN(parseInt(char, 10));
+                    if (isNum) {
+                        strRunCount += char;
+                    }
+                    else if (char === "$") {
+                        if (strRunCount === "")
+                            strRunCount = "1";
+                        lineIndex += parseInt(strRunCount, 10);
+                        strRunCount = "";
+                        colIndex = 0;
+                    }
+                    else if (char === "b" || char === "o") {
+                        if (strRunCount === "")
+                            strRunCount = "1";
+                        const runCount = parseInt(strRunCount, 10);
+                        strRunCount = "";
+                        for (let run = 0; run < runCount; run++) {
+                            this.state[atX + colIndex][atY + lineIndex] = char == "o";
+                            colIndex++;
+                        }
+                    }
+                }
+            }
+        });
     }
     play() {
         this.isRunning = true;

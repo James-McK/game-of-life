@@ -2,11 +2,14 @@ export class Renderer {
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
 
-  private squareSize: number = 15;
-  private numWide = 118;
-  private numTall = 62;
+  private squareSize: number = 8;
+  private numWide = 230;
+  private numTall = 115;
 
-  constructor() {
+  constructor(width: number, height: number) {
+    this.numWide = width;
+    this.numTall = height;
+
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;
     const context = canvas.getContext("2d", { alpha: false })!;
 
