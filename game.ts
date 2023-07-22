@@ -44,12 +44,12 @@ export class Game {
           i = j + 1;
 
           if (line[0] == "!") continue;
-          lineIndex++;
 
           for (let charIndex = 0; charIndex < line.length; charIndex++) {
             this.state[atX + charIndex]![atY + lineIndex] =
               line[charIndex] == "O";
           }
+          lineIndex++;
         }
       });
   }
@@ -66,16 +66,16 @@ export class Game {
         while (i < data.length) {
           let j = data.indexOf("\n", i);
           if (j == -1) j = data.length;
-          let line = data.substring(i, j);
+          const line = data.substring(i, j);
           i = j + 1;
 
           if (line[0] == "#") continue;
           if (line[0] == "x") continue; // Ignore the header for now
 
           for (let charIndex = 0; charIndex < line.length; charIndex++) {
-            let char = line[charIndex]!;
+            const char = line[charIndex]!;
 
-            let isNum = !isNaN(parseInt(char, 10));
+            const isNum = !isNaN(parseInt(char, 10));
 
             if (isNum) {
               strRunCount += char;
@@ -87,7 +87,7 @@ export class Game {
               colIndex = 0;
             } else if (char === "b" || char === "o") {
               if (strRunCount === "") strRunCount = "1";
-              let runCount = parseInt(strRunCount, 10);
+              const runCount = parseInt(strRunCount, 10);
               strRunCount = "";
 
               for (let run = 0; run < runCount; run++) {
