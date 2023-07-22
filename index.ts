@@ -5,6 +5,7 @@ import { Game } from "./game.js";
  */
 async function main() {
   let game = new Game();
+  game.play();
 }
 
 // Run the main function
