@@ -25,9 +25,9 @@ export class Renderer {
   public async draw(state: boolean[][]) {
     this.clearCanvas();
 
-    for (let xIndex = 0; xIndex < state.length; xIndex++) {
-      for (let yIndex = 0; yIndex < state[xIndex]!.length; yIndex++) {
-        this.renderSquare(xIndex, yIndex, state[yIndex]![xIndex]!);
+    for (let xIndex = 0; xIndex < this.numWide; xIndex++) {
+      for (let yIndex = 0; yIndex < this.numTall; yIndex++) {
+        this.renderSquare(xIndex, yIndex, state[xIndex]![yIndex]!);
       }
     }
   }
