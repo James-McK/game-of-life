@@ -7,8 +7,8 @@ export class Renderer {
   private numTall = 62;
 
   constructor() {
-    let canvas = document.getElementById("canvas") as HTMLCanvasElement;
-    let context = canvas.getContext("2d", { alpha: false })!;
+    const canvas = document.getElementById("canvas") as HTMLCanvasElement;
+    const context = canvas.getContext("2d", { alpha: false })!;
 
     canvas.width = this.numWide * this.squareSize + this.numWide;
     canvas.height = this.numTall * this.squareSize + this.numTall;
