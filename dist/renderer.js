@@ -1,10 +1,12 @@
 export class Renderer {
     canvas;
     context;
-    squareSize = 15;
-    numWide = 118;
-    numTall = 62;
-    constructor() {
+    squareSize = 8;
+    numWide = 230;
+    numTall = 115;
+    constructor(width, height) {
+        this.numWide = width;
+        this.numTall = height;
         const canvas = document.getElementById("canvas");
         const context = canvas.getContext("2d", { alpha: false });
         canvas.width = this.numWide * this.squareSize + this.numWide;

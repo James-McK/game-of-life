@@ -5,16 +5,18 @@ export class Game {
   private state: boolean[][];
   private tempState: boolean[][];
 
-  private width = 118;
-  private height = 62;
+  private width = 230;
+  private height = 115;
 
   private interval: number;
 
   private isRunning: boolean = false;
   private stepCount: number = 0;
 
-  constructor() {
-    this.renderer = new Renderer();
+  constructor(width: number, height: number) {
+    this.width = width;
+    this.height = height;
+    this.renderer = new Renderer(width, height);
 
     this.state = Array.from({ length: this.width }, () =>
       Array.from({ length: this.height }, () => false)
@@ -22,15 +24,46 @@ export class Game {
     this.tempState = structuredClone(this.state);
 
     // Set up a glider to start
-    this.state[1]![0] = true;
-    this.state[2]![1] = true;
-    this.state[0]![2] = true;
-    this.state[1]![2] = true;
-    this.state[2]![2] = true;
+    // this.state[1]![0] = true;
+    // this.state[2]![1] = true;
+    // this.state[0]![2] = true;
+    // this.state[1]![2] = true;
+    // this.state[2]![2] = true;
 
     this.interval = setInterval(() => this.stepLoop(), 20);
 
     window.requestAnimationFrame(() => this.renderLoop());
+  }
+
+  public loadPatternPlaintext(
+    patternLocation: string,
+    atX: number,
+    atY: number
+  ) {
+    fetch("/patterns/" + patternLocation)
+      .then((response) => response.text())
+      .then((data) => {
+        console.log(data);
+
+        let i = 0;
+        let lineIndex = 0;
+        while (i < data.length) {
+          let j = data.indexOf("\n", i);
+          if (j == -1) j = data.length;
+          const line = data.substring(i, j);
+          i = j + 1;
+
+          if (line[0] == "!") continue;
+          lineIndex++;
+
+          for (let charIndex = 0; charIndex < line.length; charIndex++) {
+            console.info(line[charIndex]);
+
+            this.state[atX + charIndex]![atY + lineIndex] =
+              line[charIndex] == "O";
+          }
+        }
+      });
   }
 
   public play() {
