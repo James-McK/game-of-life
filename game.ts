@@ -27,11 +27,7 @@ export class Game {
     window.requestAnimationFrame(() => this.renderLoop());
   }
 
-  public loadPatternPlaintext(
-    patternLocation: string,
-    atX: number,
-    atY: number
-  ) {
+  public loadPatternPlaintext(patternLocation: string, atX: number, atY: number) {
     fetch("/patterns/" + patternLocation)
       .then((response) => response.text())
       .then((data) => {
@@ -46,8 +42,7 @@ export class Game {
           if (line[0] == "!") continue;
 
           for (let charIndex = 0; charIndex < line.length; charIndex++) {
-            this.state[atX + charIndex]![atY + lineIndex] =
-              line[charIndex] == "O";
+            this.state[atX + charIndex]![atY + lineIndex] = line[charIndex] == "O";
           }
           lineIndex++;
         }

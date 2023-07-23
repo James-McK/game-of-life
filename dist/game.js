@@ -32,8 +32,7 @@ export class Game {
                 if (line[0] == "!")
                     continue;
                 for (let charIndex = 0; charIndex < line.length; charIndex++) {
-                    this.state[atX + charIndex][atY + lineIndex] =
-                        line[charIndex] == "O";
+                    this.state[atX + charIndex][atY + lineIndex] = line[charIndex] == "O";
                 }
                 lineIndex++;
             }
